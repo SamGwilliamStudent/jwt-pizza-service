@@ -1,3 +1,5 @@
+const { beforeAll, test, expect } = require('@jest/globals');
+
 const request = require('supertest');
 const app = require('../src/service');
 const { DB } = require('../src/database/database.js');

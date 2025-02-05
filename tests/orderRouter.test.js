@@ -1,3 +1,5 @@
+const { beforeAll, test, expect } = require('@jest/globals');
+
 const request = require('supertest');
 const app = require('../src/service');
 const { DB } = require('../src/database/database.js');
@@ -22,7 +24,6 @@ async function createAdminUser() {
 
 const testUser = { name: 'pizza diner', email: 'reg@test.com', password: 'a' };
 let testUserAuthToken;
-let testUserId;
 
 let adminUser;
 let adminAuthToken;
@@ -31,7 +32,6 @@ beforeAll(async () => {
   testUser.email = Math.random().toString(36).substring(2, 12) + '@test.com';
   const registerRes = await request(app).post('/api/auth').send(testUser);
   testUserAuthToken = registerRes.body.token;
-  testUserId = registerRes.body.user.id;
 
   adminUser = await createAdminUser();
   const adminLoginRes = await request(app)

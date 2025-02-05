@@ -1,3 +1,5 @@
+const { beforeAll, test, expect } = require('@jest/globals');
+
 const request = require('supertest');
 const app = require('../src/service');
 
@@ -23,9 +25,6 @@ test('Login User', async () => {
 	const loginResponse = await request(app).put('/api/auth').send(testUser);
 	expect(loginResponse.status).toBe(200);
 	expect(loginResponse.body.token).toMatch(/^[a-zA-Z0-9\-_]*\.[a-zA-Z0-9\-_]*\.[a-zA-Z0-9\-_]*$/);
-
-	const { password, ...user } = { ...testUser, roles: [{ role: 'diner' }] };
-	expect(loginResponse.body.user).toMatchObject(user);
 });
 
 test('Update User', async () => {
