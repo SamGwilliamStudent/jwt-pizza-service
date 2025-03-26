@@ -4,10 +4,15 @@ const { Role, DB } = require('../database/database.js');
 const { authRouter } = require('./authRouter.js');
 const { asyncHandler, StatusCodeError } = require('../endpointHelper.js');
 const metrics = require('../metrics.js');
+const logger = require('../logger.js');
 
 const orderRouter = express.Router();
 
+const Logger = require('pizza-logger');
+const pizzaLogger = new Logger(config);
+
 orderRouter.use(metrics.trackRequest());
+orderRouter.use(logger.httpLogger);
 
 orderRouter.endpoints = [
 	{
@@ -97,6 +102,7 @@ orderRouter.put(
 		}
 
 		const addMenuItemReq = req.body;
+		pizzaLogger.factoryLogger(addMenuItemReq);
 		await DB.addMenuItem(addMenuItemReq);
 		res.send(await DB.getMenu());
 	})
@@ -131,6 +137,8 @@ orderRouter.post(
 				order,
 			}),
 		});
+
+		pizzaLogger.factoryLogger(order);
 
 		const [seconds, nanoseconds] = process.hrtime(startTime); // Stop timing
 		const pizzaCreationLatencyMs = seconds * 1000 + nanoseconds / 1e6;

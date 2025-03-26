@@ -3,10 +3,16 @@ const { DB, Role } = require('../database/database.js');
 const { authRouter } = require('./authRouter.js');
 const { StatusCodeError, asyncHandler } = require('../endpointHelper.js');
 const metrics = require('../metrics.js');
+const logger = require('../logger.js');
+
+const Logger = require('pizza-logger');
+const config = require('../config.js');
+const pizzaLogger = new Logger(config);
 
 const franchiseRouter = express.Router();
 
 franchiseRouter.use(metrics.trackRequest());
+franchiseRouter.use(logger.httpLogger);
 
 franchiseRouter.endpoints = [
 	{
@@ -110,6 +116,7 @@ franchiseRouter.post(
 
 		const franchise = req.body;
 		res.send(await DB.createFranchise(franchise));
+		pizzaLogger.factoryLogger(franchise);
 	})
 );
 
@@ -143,6 +150,7 @@ franchiseRouter.post(
 		}
 
 		res.send(await DB.createStore(franchise.id, req.body));
+		pizzaLogger.factoryLogger(franchise);
 	})
 );
 
