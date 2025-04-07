@@ -226,18 +226,25 @@ function sendMetricsPeriodically(period = 10000) {
 
 			// Send Active Users
 			sendMetricToGrafana('activeUsers', activeUsers);
+			activeUsers = 0;
 
 			// Send Auth Attempts
 			sendMetricToGrafana('auth', unsuccessfulAuthenticationAttempts, {
 				status: 'failure',
 			});
+			unsuccessfulAuthenticationAttempts = 0;
+
 			sendMetricToGrafana('auth', successfulAuthenticationAttempts, {
 				status: 'success',
 			});
+			successfulAuthenticationAttempts = 0;
 
 			// Send Pizza Metrics
 			sendMetricToGrafana('orders', pizzaSuccess, { status: 'success' });
+			pizzaSuccess = 0;
+
 			sendMetricToGrafana('orders', pizzaFailure, { status: 'failure' });
+			pizzaFailure = 0;
 
 			// Send Revenue Metrics
 			// console.log(`Sending Revenue ${revenue}`);
