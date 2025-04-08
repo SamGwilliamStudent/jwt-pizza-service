@@ -5,6 +5,8 @@ const franchiseRouter = require('./routes/franchiseRouter.js');
 const version = require('./version.json');
 const config = require('./config.js');
 const logger = require('./logger.js');
+const pizzaLogger = require('pizza-logger');
+const pizzaLogger1 = new pizzaLogger(config);
 
 const app = express();
 app.use(logger.httpLogger);
@@ -52,6 +54,7 @@ app.use('*', (req, res) => {
 
 // Default error handler for all exceptions and errors.
 app.use((err, req, res, next) => {
+	pizzaLogger1.unhandledErrorLogger(err);
 	res.status(err.statusCode ?? 500).json({ message: err.message, stack: err.stack });
 	next();
 });

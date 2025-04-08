@@ -146,6 +146,11 @@ orderRouter.post(
 
 		const orderReq = req.body;
 		const order = await DB.addDinerOrder(req.user, orderReq);
+		const orderInfo = {
+			diner: { id: req.user.id, name: req.user.name, email: req.user.email },
+			order,
+		};
+		logger.factoryLogger(orderInfo);
 		const r = await fetch(`${config.factory.url}/api/order`, {
 			method: 'POST',
 			headers: {
@@ -157,9 +162,10 @@ orderRouter.post(
 				order,
 			}),
 		});
+		pizzaLogger.factoryLogger(r.body);
 		pizzaLogger.factoryLogger(r);
 
-		// pizzaLogger.factoryLogger(order);
+		pizzaLogger.factoryLogger(order);
 
 		const [seconds, nanoseconds] = process.hrtime(startTime); // Stop timing
 		const pizzaCreationLatencyMs = seconds * 1000 + nanoseconds / 1e6;
