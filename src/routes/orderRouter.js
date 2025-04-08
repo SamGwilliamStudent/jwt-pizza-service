@@ -162,10 +162,10 @@ orderRouter.post(
 				order,
 			}),
 		});
-		pizzaLogger.factoryLogger(r.body);
-		pizzaLogger.factoryLogger(r);
+		// pizzaLogger.factoryLogger(r.body);
+		// pizzaLogger.factoryLogger(r);
 
-		pizzaLogger.factoryLogger(order);
+		// pizzaLogger.factoryLogger(order);
 
 		const [seconds, nanoseconds] = process.hrtime(startTime); // Stop timing
 		const pizzaCreationLatencyMs = seconds * 1000 + nanoseconds / 1e6;
