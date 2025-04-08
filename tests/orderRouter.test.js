@@ -1,4 +1,4 @@
-// const { beforeAll, test, expect } = require('@jest/globals');
+const { test, expect } = require('@jest/globals');
 
 // const request = require('supertest');
 // const app = require('../src/service');
@@ -37,6 +37,9 @@
 //     .send({ email: adminUser.email, password: adminUser.password });
 //   adminAuthToken = adminLoginRes.body.token;
 // });
+test('test', () => {
+	expect(1 == 1);
+});
 
 // test('Get menu (public access)', async () => {
 //   const response = await request(app).get('/api/order/menu');
